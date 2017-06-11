@@ -9,7 +9,8 @@
 enum gender {woman,man};
 
 /**
- * @brief Store and manage all data about players (users)
+ * @brief Klasa określająca użytkownika i zarządzająca listą wszystkich zarejestrowanych użytkowników. Lista jest statycznym polem klasy.
+ * @authors Jarosław Tomczyński Marcin Anuszkiewicz
  */
 class User
 {
@@ -18,7 +19,6 @@ class User
         QString lastName;
         gender personGender;
         double shoutScore;
-        bool attemptedRepeat;
     public:
         User(const QString &firstName,const QString &lastName, gender gender,double score);
         static void editUser(int ID,const QString &firstName, const QString &lastName, gender personGender);
@@ -29,7 +29,7 @@ class User
         gender getPersonGender();
         static void exportToCSV(const QString &fileName);
         static QList<User*> importFromCSV(const QString &fileName);
-        static User* UserPointer(int index);
+        static User* GetUser(int index);
 };
 
 #endif // USER_H

@@ -25,11 +25,16 @@
      <height>461</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>18</pointsize>
+    </font>
+   </property>
    <property name="editTriggers">
     <set>QAbstractItemView::NoEditTriggers</set>
    </property>
    <property name="selectionMode">
-    <enum>QAbstractItemView::SingleSelection</enum>
+    <enum>QAbstractItemView::NoSelection</enum>
    </property>
    <property name="selectionBehavior">
     <enum>QAbstractItemView::SelectRows</enum>
@@ -37,6 +42,9 @@
    <property name="sortingEnabled">
     <bool>true</bool>
    </property>
+   <attribute name="verticalHeaderDefaultSectionSize">
+    <number>40</number>
+   </attribute>
   </widget>
  </widget>
  <resources/>

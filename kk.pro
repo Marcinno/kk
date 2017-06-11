@@ -18,8 +18,9 @@ SOURCES += src/main.cpp \
     src/wavFile.cpp \
     src/user.cpp \
     src/userwindow.cpp \
-    src/adduserwindow.cpp
-    src/audiomodel.cpp
+    src/adduserwindow.cpp \
+    src/audiomodel.cpp \
+    src/recordwindow.cpp
 
 HEADERS  += \
     src/recorder.h \
@@ -28,10 +29,12 @@ HEADERS  += \
     src/user.h \
     src/userwindow.h \
     src/adduserwindow.h \
-    src/audiomodel.h
+    src/audiomodel.h \
+    src/recordwindow.h
 
 
 FORMS += \
     src/mainwindow.ui \
     src/userwindow.ui \
-    src/adduserwindow.ui
+    src/adduserwindow.ui \
+    src/recordwindow.ui

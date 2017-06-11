@@ -3,8 +3,6 @@
 #include <QDesktopWidget>
 #include <QHeaderView>
 #include <QTableWidget>
-#include <QDebug>
-
 
 UserWindow::UserWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -15,14 +13,16 @@ UserWindow::UserWindow(QWidget *parent) :
     QRect rect = desktop->screenGeometry(1);
     move(rect.topLeft());
     this->showMaximized();
+    RecordWindow rw;
 
     setCentralWidget(ui->UserList);
-    ui->UserList->setColumnCount(4);
-    // ui->UserList->setColumnHidden(3, true);
+    ui->UserList->setColumnCount(5);
+    ui->UserList->setColumnHidden(3, true); // Hide ID column.
+    ui->UserList->setColumnHidden(4, true); // Hide gender column.
     QStringList Header;
-    Header<<"Imię"<<"Nazwisko"<<"Wynik";
+    Header << "Imię" << "Nazwisko" << "Wynik [dB]";
     ui->UserList->setHorizontalHeaderLabels(Header);
-    //ui->UserList->horizontalHeader()->setSortIndicator(2, Qt::DescendingOrder); // Enable default sorting by 'score' column. There is also a ability to chose sorting by either name or surname.
+    Showing = a;
 }
 
 UserWindow::~UserWindow()
@@ -41,24 +41,104 @@ void UserWindow::resizeEvent(QResizeEvent *event)
 
 void UserWindow::InsertUserToRanking(User *user, int ID)
 {
-    qDebug() << ID;
      for(int i=0;i<ui->UserList->rowCount();i++)
      {
          if (ui->UserList->item(i,3)->text() == QString::number(ID))
          {
              ui->UserList->setItem(i,0,new QTableWidgetItem(user->getFirstName()));
              ui->UserList->setItem(i,1,new QTableWidgetItem(user->getLastName()));
-             ui->UserList->setItem(i,2,new QTableWidgetItem(QString::number(user->getShoutScore())));
-             //ui->UserList->sortByColumn(2);
+             auto item = new QTableWidgetItem();
+             item->setData(Qt::DisplayRole, QVariant(user->getShoutScore()));
+             rw->GetScore(user->getShoutScore());
+             ui->UserList->setItem(i,2,item);
+             QString genderText = user->getPersonGender() == man ? "M" : "K";
+             ui->UserList->setItem(ui->UserList->rowCount()-1,4,new QTableWidgetItem(genderText));
+             ui->UserList->sortByColumn(2);
+			 if(Showing == w)
+			 {
+				 ShowAll();
+				 HideMen();
+			 }
+			 else if(Showing == m)
+			 {
+				 ShowAll();
+				 HideWomen();
+			 }
              return;
          }
      }
      ui->UserList->setRowCount(ui->UserList->rowCount()+1);
      ui->UserList->setItem(ui->UserList->rowCount()-1,0,new QTableWidgetItem(user->getFirstName()));
      ui->UserList->setItem(ui->UserList->rowCount()-1,1,new QTableWidgetItem(user->getLastName()));
-     ui->UserList->setItem(ui->UserList->rowCount()-1,2,new QTableWidgetItem(QString::number(user->getShoutScore())));
+     auto item = new QTableWidgetItem();
+     item->setData(Qt::DisplayRole, QVariant(user->getShoutScore()));
+     ui->UserList->setItem(ui->UserList->rowCount()-1,2,item);
      ui->UserList->setItem(ui->UserList->rowCount()-1,3,new QTableWidgetItem(QString::number(ID)));
+     QString genderText = user->getPersonGender() == man ? "M" : "K";
+     ui->UserList->setItem(ui->UserList->rowCount()-1,4,new QTableWidgetItem(genderText));
      ui->UserList->sortByColumn(2);
+     if(Showing == w)
+     {
+         ShowAll();
+         HideMen();
+     }
+     else if(Showing == m)
+     {
+         ShowAll();
+         HideWomen();
+     }
 }
+
+void UserWindow::ClearRanking()
+{
+    ui->UserList->clearContents();
+    ui->UserList->setRowCount(0);
+}
+
+void UserWindow::SetShowing(showing Showing)
+{
+    this->Showing=Showing;
+}
+
+void UserWindow::HideMen()
+{
+    for(int i=0;i<ui->UserList->rowCount();i++)
+    {
+        if(ui->UserList->item(i,4)->text()=="M")
+        {
+            ui->UserList->setRowHidden(i,true);
+        }
+    }
+}
+void UserWindow::HideWomen()
+{
+    for(int i=0;i<ui->UserList->rowCount();i++)
+    {
+        if(ui->UserList->item(i,4)->text()=="K")
+        {
+            ui->UserList->setRowHidden(i,true);
+        }
+    }
+}
+void UserWindow::ShowAll()
+{
+    for(int i=0;i<ui->UserList->rowCount();i++)
+    {
+        ui->UserList->setRowHidden(i,false);
+    }
+}
+
+void UserWindow::ShowRecordWindow()
+{
+    rw = new RecordWindow(this);
+    if (rw->exec() == 1)
+    {
+
+    }
+    delete rw;
+}
+
+
+
 
 

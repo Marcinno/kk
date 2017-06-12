@@ -4,6 +4,7 @@
 #include "user.h"
 #include <QMainWindow>
 #include "recordwindow.h"
+#include "scorewindow.h"
 
 enum showing {m,w,a};
 
@@ -26,7 +27,9 @@ public:
     void HideWomen();
     void ShowAll();
     void ShowRecordWindow();
+    void ShowScoreWindow(double score);
     RecordWindow *rw;
+    ScoreWindow *sw;
 
 private:
     Ui::UserWindow *ui;

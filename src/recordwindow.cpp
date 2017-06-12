@@ -20,11 +20,6 @@ RecordWindow::~RecordWindow()
     delete ui;
 }
 
-void RecordWindow::GetScore(double sendScore)
-{
-    score=sendScore;
-}
-
 void RecordWindow::Timer()
 {
     x--;

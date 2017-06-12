@@ -15,7 +15,6 @@ class RecordWindow : public QDialog
 public:
     explicit RecordWindow(QWidget *parent = 0);
     ~RecordWindow();
-    void GetScore(double score);
     QTimer *timer;
 
 private:

@@ -63,23 +63,25 @@ void MainWindow::proceed()
                 {
                     ui->AdminUserList->item(rowindex,4)->setCheckState(Qt::Checked);
                 }
-				if (!recordOnRun)
+                if (!recordOnRun)
                 {
-                    userWindow->ShowRecordWindow();                   
+                    recorder.Start();
+                    recordOnRun = true;
+                    connect(&recorder, SIGNAL(recordingStopped(const QVector<std::complex<double> > &)), this, SLOT(onRecordingStopped(const QVector<std::complex<double> > &)));
+                    currentUser = rowindex; // onRecordingStopped() slot must know, to which user it should assigns shout level.
+                    ui->recordButton->setText(tr("Zatrzymaj"));
+                    ui->deviceComboBox->setEnabled(false);
+                    userWindow->ShowRecordWindow();
                     User::setShoutScore(rowindex,score);
                     userWindow->InsertUserToRanking(User::GetUser(rowindex),rowindex);
                     ui->AdminUserList->setItem(rowindex,3,new QTableWidgetItem(QString::number(score)));
-                    connect(&recorder, SIGNAL(recordingStopped(const QVector<std::complex<double> > &)), this, SLOT(onRecordingStopped(const QVector<std::complex<double> > &)));
-					currentUser = rowindex; // onRecordingStopped() slot must know, to which user it should assigns shout level.
-                    recorder.Start();
-                    recordOnRun = true;
-                   // ui->recordButton->setText(tr("Zatrzymaj"));
-                    ui->deviceComboBox->setEnabled(false);
+                    userWindow->ShowScoreWindow(score);
+
                 }
                 else
                 {
                     recorder.Stop();
-				}
+                }
             }
             else
             {

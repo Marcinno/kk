@@ -14,7 +14,7 @@ UserWindow::UserWindow(QWidget *parent) :
     move(rect.topLeft());
     this->showMaximized();
     RecordWindow rw;
-
+    //ScoreWindow sw;
     setCentralWidget(ui->UserList);
     ui->UserList->setColumnCount(5);
     ui->UserList->setColumnHidden(3, true); // Hide ID column.
@@ -49,7 +49,7 @@ void UserWindow::InsertUserToRanking(User *user, int ID)
              ui->UserList->setItem(i,1,new QTableWidgetItem(user->getLastName()));
              auto item = new QTableWidgetItem();
              item->setData(Qt::DisplayRole, QVariant(user->getShoutScore()));
-             rw->GetScore(user->getShoutScore());
+             //rw->GetScore(user->getShoutScore());
              ui->UserList->setItem(i,2,item);
              QString genderText = user->getPersonGender() == man ? "M" : "K";
              ui->UserList->setItem(ui->UserList->rowCount()-1,4,new QTableWidgetItem(genderText));
@@ -136,6 +136,16 @@ void UserWindow::ShowRecordWindow()
 
     }
     delete rw;
+}
+
+void UserWindow::ShowScoreWindow(double score)
+{
+    sw = new ScoreWindow(score,this);
+    if (sw->exec() ==1)
+    {
+
+    }
+    delete sw;
 }
 
 
